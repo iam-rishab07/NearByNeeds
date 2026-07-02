@@ -318,6 +318,6 @@ It helps the project reach more developers and motivates future improvements.
 
 GitHub: https://github.com/iam-rishab07
 
-LinkedIn: *(Add your LinkedIn profile here)*
+LinkedIn: https://www.linkedin.com/in/vrushabh07/
 
 ---
