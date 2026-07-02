@@ -1,26 +1,18 @@
 package com.nearbyneeds.repository;
 
 import com.nearbyneeds.model.Issue;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, Long> {
 
-    /**
-     * Native query using the Haversine formula to find issues within a given radius.
-     * The Earth's radius is approximated at 6371 km.
-     * 
-     * @param lat the user's latitude
-     * @param lon the user's longitude
-     * @param radius radius in kilometers
-     * @return List of issues within the specified radius
-     */
     @Query(value = """
             SELECT * FROM issues i
             WHERE (
@@ -34,8 +26,16 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
             ) <= :radius
             """, nativeQuery = true)
     List<Issue> findNearbyIssues(
-            @Param("lat") BigDecimal lat, 
-            @Param("lon") BigDecimal lon, 
+            @Param("lat") Double lat, 
+            @Param("lon") Double lon, 
             @Param("radius") double radius
     );
+
+    Page<Issue> findByStatus(Issue.Status status, Pageable pageable);
+
+    Page<Issue> findByCategoryId(Long categoryId, Pageable pageable);
+
+    Page<Issue> findByStatusAndCategoryId(Issue.Status status, Long categoryId, Pageable pageable);
+
+    Page<Issue> findByUserId(Long userId, Pageable pageable);
 }

@@ -1,12 +1,13 @@
 package com.nearbyneeds.service;
 
-import com.nearbyneeds.model.Issue;
-import com.nearbyneeds.repository.IssueRepository;
+import com.nearbyneeds.model.*;
+import com.nearbyneeds.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,37 +15,57 @@ import java.util.Optional;
 public class IssueService {
 
     private final IssueRepository issueRepository;
+    private final IssueCategoryRepository categoryRepository;
 
     @Autowired
-    public IssueService(IssueRepository issueRepository) {
+    public IssueService(IssueRepository issueRepository, IssueCategoryRepository categoryRepository) {
         this.issueRepository = issueRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Transactional
-    public Issue createIssue(Issue issue) {
-        // Ensure defaults are set if not provided by client
-        if (issue.getStatus() == null) {
-            issue.setStatus(Issue.Status.OPEN);
+    public Issue createIssue(Issue issue, User user, Long categoryId) {
+        if (user.getAccountStatus() != User.AccountStatus.ACTIVE) {
+            throw new RuntimeException("Suspended or banned users cannot post issues!");
         }
-        if (issue.getUpvotes() == null) {
-            issue.setUpvotes(0);
-        }
+
+        IssueCategory category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found!"));
+        
+        issue.setUser(user);
+        issue.setCategory(category);
+        issue.setStatus(Issue.Status.OPEN);
+        issue.setMeTooCount(0);
+
         return issueRepository.save(issue);
     }
 
-    public List<Issue> getNearbyIssues(BigDecimal lat, BigDecimal lon, double radius) {
+    public Page<Issue> getFilteredIssues(Issue.Status status, Long categoryId, Pageable pageable) {
+        if (status != null && categoryId != null) {
+            return issueRepository.findByStatusAndCategoryId(status, categoryId, pageable);
+        } else if (status != null) {
+            return issueRepository.findByStatus(status, pageable);
+        } else if (categoryId != null) {
+            return issueRepository.findByCategoryId(categoryId, pageable);
+        } else {
+            return issueRepository.findAll(pageable);
+        }
+    }
+
+    public Optional<Issue> getIssueById(Long id) {
+        return issueRepository.findById(id);
+    }
+
+    public List<Issue> getNearbyIssues(Double lat, Double lon, double radius) {
         return issueRepository.findNearbyIssues(lat, lon, radius);
     }
 
     @Transactional
-    public Optional<Issue> upvoteIssue(Long id) {
-        return issueRepository.findById(id).map(issue -> {
-            issue.setUpvotes(issue.getUpvotes() + 1);
-            return issueRepository.save(issue);
-        });
+    public Issue save(Issue issue) {
+        return issueRepository.save(issue);
     }
 
-    public List<Issue> getAllIssues() {
-        return issueRepository.findAll();
+    public Page<Issue> getIssuesByUserId(Long userId, Pageable pageable) {
+        return issueRepository.findByUserId(userId, pageable);
     }
 }
