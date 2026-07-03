@@ -18,8 +18,8 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; allowedRoles?: strin
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex justify-center items-center text-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-400"></div>
+      <div className="min-h-screen bg-[var(--color-bg)] flex justify-center items-center text-[#111111]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FFD21F]"></div>
       </div>
     );
   }
@@ -39,7 +39,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+        <div className="min-h-screen bg-[var(--color-bg)] text-[#111111] flex flex-col font-sans">
           <Navbar />
           <main className="flex-grow">
             <Routes>

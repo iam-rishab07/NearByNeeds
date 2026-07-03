@@ -93,40 +93,43 @@ const MapDashboard: React.FC = () => {
     };
 
     if (loading || !userLoc) {
-        return <div className="flex h-screen items-center justify-center">Loading Map...</div>;
+        return <div className="flex h-screen items-center justify-center bg-[var(--color-bg)] text-[#111111] font-bold tracking-widest uppercase">Loading Map...</div>;
     }
 
     return (
-        <div className="map-container" style={{ height: '100vh', width: '100%' }}>
-            <MapContainer center={[userLoc.lat, userLoc.lng]} zoom={13} style={{ height: '100%', width: '100%' }}>
+        <div className="map-container relative" style={{ height: '100vh', width: '100%' }}>
+            <MapContainer center={[userLoc.lat, userLoc.lng]} zoom={13} style={{ height: '100%', width: '100%' }} zoomControl={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    className="map-tiles"
                 />
                 
                 <RecenterMap lat={userLoc.lat} lng={userLoc.lng} />
 
                 {/* Current User Location Marker */}
                 <Marker position={[userLoc.lat, userLoc.lng]}>
-                    <Popup>
-                        <strong>You are here</strong>
+                    <Popup className="custom-popup">
+                        <div className="p-1">
+                            <strong className="text-sm font-bold text-gray-800">You are here</strong>
+                        </div>
                     </Popup>
                 </Marker>
 
                 {/* Nearby Issues Markers */}
                 {issues.map(issue => (
                     <Marker key={issue.id} position={[issue.latitude, issue.longitude]}>
-                        <Popup>
-                            <div>
-                                <h3 className="font-bold text-lg mb-1">{issue.title}</h3>
-                                <p className="text-sm text-gray-700 mb-2">{issue.description}</p>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                        <Popup className="custom-popup">
+                            <div className="p-2 space-y-2 min-w-[200px]">
+                                <h3 className="font-bold text-lg leading-tight text-gray-900">{issue.title}</h3>
+                                <p className="text-sm text-gray-600 line-clamp-2">{issue.description}</p>
+                                <div className="flex items-center justify-between pt-2">
+                                    <span className="text-[10px] font-bold tracking-wider uppercase bg-gray-100 text-gray-800 px-2.5 py-1 rounded-md">
                                         {issue.category}
                                     </span>
                                     <button 
                                         onClick={() => handleUpvote(issue.id)}
-                                        className="text-sm bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition"
+                                        className="text-xs font-bold text-black bg-[#FFD21F] px-3 py-1.5 rounded-md hover:bg-[#F4C430] transition shadow-md"
                                     >
                                         Upvote ({issue.upvotes})
                                     </button>

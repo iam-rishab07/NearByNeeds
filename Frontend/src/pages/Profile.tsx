@@ -70,58 +70,61 @@ export const Profile: React.FC = () => {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'OPEN': return 'bg-sky-500/10 text-sky-400 border-sky-500/20';
-      case 'ESCALATED': return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-      case 'IN_PROGRESS': return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20';
-      case 'RESOLVED': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-      case 'MARKED_FAKE': return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
-      default: return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
+      case 'OPEN': return 'bg-sky-50 text-sky-600 border-sky-200';
+      case 'ESCALATED': return 'bg-amber-50 text-amber-600 border-amber-200';
+      case 'IN_PROGRESS': return 'bg-indigo-50 text-indigo-600 border-indigo-200';
+      case 'RESOLVED': return 'bg-emerald-50 text-emerald-600 border-emerald-200';
+      case 'MARKED_FAKE': return 'bg-rose-50 text-rose-600 border-rose-200';
+      default: return 'bg-gray-50 text-gray-600 border-gray-200';
     }
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-950 text-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-[calc(100vh-4rem)] bg-[var(--color-bg)] text-[#111111] py-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="bg-glow top-0 left-0"></div>
+      <div className="bg-glow bottom-0 right-0"></div>
+
+      <div className="max-w-6xl mx-auto space-y-8 relative z-10">
         
         {/* Profile Card & Info */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* User Details Sidebar */}
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-6">
+          <div className="premium-card p-8 space-y-6 self-start">
             <div className="text-center space-y-3">
-              <div className="inline-block bg-slate-950 p-4 rounded-full border border-slate-800">
-                <User className="h-16 w-16 text-emerald-400" />
+              <div className="inline-block bg-[#FAFAF8] p-5 rounded-full border border-[#E8E8E8] shadow-sm">
+                <User className="h-16 w-16 text-[#FFD21F]" />
               </div>
               <div>
-                <h2 className="font-extrabold text-xl">{user?.fullName}</h2>
-                <p className="text-xs text-slate-400 mt-0.5">{user?.email}</p>
+                <h2 className="font-extrabold text-xl text-[#111111]">{user?.fullName}</h2>
+                <p className="text-xs text-[#666666] mt-1 font-medium">{user?.email}</p>
               </div>
-              <span className={`inline-block text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border ${user?.accountStatus === 'ACTIVE' ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/20' : 'bg-rose-500/5 text-rose-400 border-rose-500/20'}`}>
+              <span className={`inline-block text-[10px] uppercase font-bold tracking-wider px-3 py-1.5 rounded-full border shadow-sm ${user?.accountStatus === 'ACTIVE' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-red-50 text-red-600 border-red-200'}`}>
                 {user?.accountStatus}
               </span>
             </div>
 
-            <div className="space-y-4 border-t border-slate-850 pt-5 text-sm">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Phone</span>
-                <span className="text-slate-200">{user?.phone || "Not set"}</span>
+            <div className="space-y-4 border-t border-[#E8E8E8] pt-6 text-sm">
+              <div className="flex justify-between items-center bg-[#FAFAF8] p-3 rounded-xl border border-[#E8E8E8]">
+                <span className="text-[#666666] font-bold text-xs uppercase tracking-wider">Phone</span>
+                <span className="text-[#111111] font-bold">{user?.phone || "Not set"}</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Role</span>
-                <span className="text-slate-200 font-mono text-xs">{user?.role}</span>
+              <div className="flex justify-between items-center bg-[#FAFAF8] p-3 rounded-xl border border-[#E8E8E8]">
+                <span className="text-[#666666] font-bold text-xs uppercase tracking-wider">Role</span>
+                <span className="text-[#111111] font-mono text-xs font-bold">{user?.role}</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Points Balance</span>
-                <span className="text-emerald-400 font-extrabold font-mono">{user?.rewardPoints} pts</span>
+              <div className="flex justify-between items-center bg-[#FAFAF8] p-3 rounded-xl border border-[#E8E8E8]">
+                <span className="text-[#666666] font-bold text-xs uppercase tracking-wider">Points Balance</span>
+                <span className="text-[#FFD21F] font-extrabold font-mono text-base">{user?.rewardPoints} pts</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Fake Reports</span>
-                <span className={`font-bold font-mono ${user && user.fakeReportCount > 0 ? 'text-rose-400' : 'text-slate-200'}`}>
+              <div className="flex justify-between items-center bg-[#FAFAF8] p-3 rounded-xl border border-[#E8E8E8]">
+                <span className="text-[#666666] font-bold text-xs uppercase tracking-wider">Fake Reports</span>
+                <span className={`font-bold font-mono ${user && user.fakeReportCount > 0 ? 'text-red-500' : 'text-[#111111]'}`}>
                   {user?.fakeReportCount}
                 </span>
               </div>
               {user?.accountStatus === 'SUSPENDED' && user.suspensionUntil && (
-                <div className="p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs rounded-lg text-center font-semibold">
+                <div className="p-4 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl text-center font-bold shadow-sm">
                   Suspension active until: <br/> {new Date(user.suspensionUntil).toLocaleString()}
                 </div>
               )}
@@ -129,17 +132,17 @@ export const Profile: React.FC = () => {
 
             {/* Admin Seeding actions */}
             {user && user.role === 'SUPER_ADMIN' && (
-              <div className="border-t border-slate-850 pt-5 space-y-3">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Developer Diagnostics</h4>
+              <div className="border-t border-[#E8E8E8] pt-6 space-y-4">
+                <h4 className="text-xs font-bold text-[#666666] uppercase tracking-wider">Developer Diagnostics</h4>
                 <button
                   onClick={handleSeedDatabase}
                   disabled={seeding}
-                  className="w-full flex items-center justify-center gap-1.5 py-2.5 px-4 border border-slate-800 hover:border-amber-500/20 bg-slate-950 text-slate-400 hover:text-amber-400 rounded-xl text-xs font-bold transition"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-red-200 hover:border-red-300 bg-red-50 text-red-600 rounded-xl text-sm font-bold transition-all shadow-sm"
                 >
-                  <Settings className="h-4 w-4 animate-spin" />
+                  <Settings className={`h-4 w-4 ${seeding ? 'animate-spin' : ''}`} />
                   {seeding ? 'Seeding Tables...' : 'Seed Master DB Data'}
                 </button>
-                <p className="text-[10px] text-slate-500 leading-normal text-center">
+                <p className="text-[11px] text-[#666666] leading-relaxed text-center font-semibold">
                   Clear all database tables and populate categories, wards, rewards catalog, and default test roles.
                 </p>
               </div>
@@ -150,32 +153,32 @@ export const Profile: React.FC = () => {
           <div className="lg:col-span-2 space-y-6">
             
             {/* My reported issues */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
-              <h3 className="text-base font-extrabold flex items-center gap-1.5 border-b border-slate-850 pb-3">
-                <FileText className="h-5 w-5 text-emerald-400" /> My Reported Issues ({myIssues.length})
+            <div className="premium-card p-8 space-y-5">
+              <h3 className="text-lg font-extrabold flex items-center gap-2 border-b border-[#E8E8E8] pb-4 text-[#111111]">
+                <FileText className="h-5 w-5 text-[#FFD21F]" /> My Reported Issues ({myIssues.length})
               </h3>
 
               {loading ? (
-                <div className="flex justify-center items-center py-6">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-emerald-400"></div>
+                <div className="flex justify-center items-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#FFD21F]"></div>
                 </div>
               ) : myIssues.length === 0 ? (
-                <div className="p-6 text-center text-slate-500 text-sm">
+                <div className="p-8 text-center text-[#666666] text-sm font-bold bg-[#FAFAF8] rounded-xl border border-[#E8E8E8]">
                   You haven't reported any civic issues yet.
                 </div>
               ) : (
-                <div className="divide-y divide-slate-850 max-h-80 overflow-y-auto pr-2">
+                <div className="space-y-3 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
                   {myIssues.map(issue => (
-                    <div key={issue.id} className="py-3.5 flex justify-between items-center hover:bg-slate-850/10 transition px-2 rounded-lg">
-                      <div className="space-y-1">
-                        <Link to={`/issue/${issue.id}`} className="font-bold text-sm text-slate-200 hover:text-emerald-400 transition">
+                    <div key={issue.id} className="p-4 flex justify-between items-center bg-[#FAFAF8] hover:bg-[#F5F5F2] transition-colors rounded-xl border border-[#E8E8E8]">
+                      <div className="space-y-1.5">
+                        <Link to={`/issue/${issue.id}`} className="font-bold text-sm text-[#111111] hover:text-[#FFD21F] transition-colors leading-tight block">
                           {issue.title}
                         </Link>
-                        <div className="text-[10px] text-slate-500">
+                        <div className="text-[11px] text-[#666666] font-semibold">
                           Reported on: {new Date(issue.createdAt).toLocaleDateString()}
                         </div>
                       </div>
-                      <span className={`text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${getStatusBadge(issue.status)}`}>
+                      <span className={`text-[9px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border shadow-sm ${getStatusBadge(issue.status)}`}>
                         {issue.status}
                       </span>
                     </div>
@@ -185,50 +188,52 @@ export const Profile: React.FC = () => {
             </div>
 
             {/* Penalties Incurred card */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
-              <h3 className="text-base font-extrabold flex items-center gap-1.5 border-b border-slate-850 pb-3 text-rose-400">
-                <ShieldAlert className="h-5 w-5" /> Fines & Penalty Log ({penalties.length})
+            <div className="premium-card p-8 space-y-5">
+              <h3 className="text-lg font-extrabold flex items-center gap-2 border-b border-[#E8E8E8] pb-4 text-red-500">
+                <ShieldAlert className="h-5 w-5 text-red-500" /> Fines & Penalty Log ({penalties.length})
               </h3>
 
               {loading ? (
-                <div className="flex justify-center items-center py-6">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-rose-400"></div>
+                <div className="flex justify-center items-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-red-500"></div>
                 </div>
               ) : penalties.length === 0 ? (
-                <div className="p-6 text-center text-slate-500 text-sm flex flex-col justify-center items-center gap-1">
-                  <Heart className="h-8 w-8 text-emerald-400 mb-1" />
-                  <span className="text-emerald-400 font-bold">Good Citizen Record</span>
-                  <span>No violations or fake report penalties. Thank you for reporting genuine issues!</span>
+                <div className="p-8 text-center text-[#666666] text-sm flex flex-col justify-center items-center gap-2 bg-[#FAFAF8] rounded-xl border border-[#E8E8E8]">
+                  <Heart className="h-10 w-10 text-[#FFD21F] mb-1" />
+                  <span className="text-[#111111] font-extrabold text-base">Good Citizen Record</span>
+                  <span className="font-semibold text-[#666666] max-w-sm">No violations or fake report penalties. Thank you for reporting genuine issues!</span>
                 </div>
               ) : (
-                <div className="divide-y divide-slate-850">
+                <div className="space-y-4">
                   {penalties.map(p => (
-                    <div key={p.id} className="py-4 flex justify-between items-start gap-4">
-                      <div className="space-y-1">
-                        <h4 className="text-sm font-semibold text-slate-200">
+                    <div key={p.id} className="p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-red-50 hover:bg-red-100 transition-colors border border-red-100 rounded-xl">
+                      <div className="space-y-1.5">
+                        <h4 className="text-sm font-extrabold text-red-700">
                           Offense #{p.offenseNumber}: Reported fake issue
                         </h4>
-                        <p className="text-xs text-slate-400 italic">
+                        <p className="text-xs text-red-600/80 italic font-medium">
                           Target: "{p.issue.title}"
                         </p>
-                        <div className="text-[10px] text-slate-500">
+                        <div className="text-[11px] text-red-500 font-semibold">
                           Date: {new Date(p.createdAt).toLocaleDateString()}
                         </div>
                       </div>
-                      <div className="text-right space-y-1.5">
-                        <div className="text-sm font-extrabold text-rose-400 font-mono">
+                      <div className="text-left sm:text-right space-y-2 w-full sm:w-auto">
+                        <div className="text-sm font-extrabold text-red-700 font-mono bg-white px-3 py-1.5 rounded-lg border border-red-200 inline-block sm:block text-center sm:text-right shadow-sm">
                           ₹{p.fineAmount} Fine
                         </div>
-                        {p.suspensionDays && (
-                          <div className="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 font-bold uppercase inline-block">
-                            {p.suspensionDays} Days Suspended
-                          </div>
-                        )}
-                        {p.isPermanentBan && (
-                          <div className="text-[10px] text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20 font-bold uppercase inline-block">
-                            Banned
-                          </div>
-                        )}
+                        <div className="flex flex-wrap gap-2 justify-start sm:justify-end">
+                          {p.suspensionDays && (
+                             <div className="text-[10px] text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200 font-bold uppercase shadow-sm">
+                              {p.suspensionDays} Days Suspended
+                            </div>
+                          )}
+                          {p.isPermanentBan && (
+                            <div className="text-[10px] text-red-600 bg-red-100 px-2.5 py-1 rounded-md border border-red-200 font-bold uppercase shadow-sm">
+                              Banned
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}

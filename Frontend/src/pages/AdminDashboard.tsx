@@ -57,73 +57,75 @@ export const AdminDashboard: React.FC = () => {
   }, [statusFilter, user]);
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-950 text-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-[calc(100vh-4rem)] bg-[var(--color-bg)] text-[#111111] py-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="bg-glow top-0 left-0"></div>
+      <div className="bg-glow bottom-0 right-0"></div>
+      <div className="max-w-7xl mx-auto space-y-6 relative z-10">
         
         {/* Admin Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-amber-500/20 p-6 rounded-2xl shadow-xl bg-amber-500/5">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-extrabold flex items-center gap-2">
-              <ShieldCheck className="h-7 w-7 text-amber-400" /> Municipal Verification Dashboard
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 premium-card p-8">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-extrabold flex items-center gap-2 text-[#111111]">
+              <ShieldCheck className="h-7 w-7 text-[#FFD21F]" /> Municipal Verification Dashboard
             </h1>
-            <p className="text-slate-400 text-sm">
-              Jurisdiction: <strong>Pune Municipal Corporation (PMC)</strong>
+            <p className="text-[#666666] text-sm">
+              Jurisdiction: <strong className="text-[#111111]">Your City Municipal Corporation</strong>
             </p>
           </div>
           
           <button
             onClick={loadAdminIssues}
-            className="p-2 border border-slate-700 hover:border-slate-600 rounded-lg transition"
+            className="p-3 bg-white border border-[#E8E8E8] hover:border-[#FFD21F]/50 rounded-xl transition shadow-sm hover:text-[#FFD21F]"
             title="Refresh feed"
           >
-            <RefreshCw className="h-5 w-5 text-slate-400" />
+            <RefreshCw className="h-5 w-5 text-[#666666] hover:text-[#FFD21F] transition-colors" />
           </button>
         </div>
 
         {/* Info stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-1">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Review Pipeline</span>
-            <div className="text-3xl font-extrabold text-amber-400">
+          <div className="premium-card p-6 space-y-2 transition-all hover:-translate-y-1 hover:border-[#FFD21F]/50">
+            <span className="text-xs font-bold text-[#666666] uppercase tracking-wider">Review Pipeline</span>
+            <div className="text-4xl font-extrabold text-[#FFD21F]">
               {issues.filter(i => i.status === 'ESCALATED').length}
             </div>
-            <p className="text-[11px] text-slate-500">Escalated issues requiring audit</p>
+            <p className="text-[11px] text-[#666666] font-medium">Escalated issues requiring audit</p>
           </div>
 
-          <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-1">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">In Progress Wards</span>
-            <div className="text-3xl font-extrabold text-indigo-400">
+          <div className="premium-card p-6 space-y-2 transition-all hover:-translate-y-1 hover:border-indigo-400">
+            <span className="text-xs font-bold text-[#666666] uppercase tracking-wider">In Progress Wards</span>
+            <div className="text-4xl font-extrabold text-indigo-500">
               {issues.filter(i => i.status === 'IN_PROGRESS').length}
             </div>
-            <p className="text-[11px] text-slate-500">Scheduled repairs and maintenance</p>
+            <p className="text-[11px] text-[#666666] font-medium">Scheduled repairs and maintenance</p>
           </div>
 
-          <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-1">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Ward Feed</span>
-            <div className="text-3xl font-extrabold text-white">
+          <div className="premium-card p-6 space-y-2 transition-all hover:-translate-y-1 hover:border-[#111111]/30">
+            <span className="text-xs font-bold text-[#666666] uppercase tracking-wider">Total Ward Feed</span>
+            <div className="text-4xl font-extrabold text-[#111111]">
               {issues.length}
             </div>
-            <p className="text-[11px] text-slate-500">Total reports currently active</p>
+            <p className="text-[11px] text-[#666666] font-medium">Total reports currently active</p>
           </div>
         </div>
 
         {/* Tab Filters */}
-        <div className="flex border-b border-slate-850 gap-4 text-sm font-semibold">
+        <div className="flex border-b border-[#E8E8E8] gap-6 text-sm font-semibold">
           <button
             onClick={() => setStatusFilter('ESCALATED')}
-            className={`pb-3 px-1 border-b-2 transition ${statusFilter === 'ESCALATED' ? 'border-amber-400 text-amber-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+            className={`pb-3 px-1 border-b-2 transition ${statusFilter === 'ESCALATED' ? 'border-[#FFD21F] text-[#111111]' : 'border-transparent text-[#666666] hover:text-[#111111]'}`}
           >
             Escalated (Waiting Review)
           </button>
           <button
             onClick={() => setStatusFilter('IN_PROGRESS')}
-            className={`pb-3 px-1 border-b-2 transition ${statusFilter === 'IN_PROGRESS' ? 'border-indigo-400 text-indigo-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+            className={`pb-3 px-1 border-b-2 transition ${statusFilter === 'IN_PROGRESS' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-[#666666] hover:text-[#111111]'}`}
           >
             In Progress
           </button>
           <button
             onClick={() => setStatusFilter('ALL')}
-            className={`pb-3 px-1 border-b-2 transition ${statusFilter === 'ALL' ? 'border-emerald-400 text-emerald-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+            className={`pb-3 px-1 border-b-2 transition ${statusFilter === 'ALL' ? 'border-[#111111] text-[#111111]' : 'border-transparent text-[#666666] hover:text-[#111111]'}`}
           >
             All Ward Reports
           </button>
@@ -132,64 +134,66 @@ export const AdminDashboard: React.FC = () => {
         {/* Issues list */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-emerald-400"></div>
+            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-[#FFD21F]"></div>
           </div>
         ) : issues.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-850 p-12 text-center rounded-2xl">
-            <AlertCircle className="h-10 w-10 text-slate-600 mx-auto mb-3" />
-            <p className="text-slate-400 text-base">No ward issues found in this category.</p>
+          <div className="premium-card p-12 text-center">
+            <AlertCircle className="h-10 w-10 text-[#666666] mx-auto mb-3" />
+            <p className="text-[#666666] text-base font-medium">No ward issues found in this category.</p>
           </div>
         ) : (
-          <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-slate-950 text-slate-400 uppercase text-xs font-semibold border-b border-slate-800">
-                <tr>
-                  <th className="px-6 py-4">Title</th>
-                  <th className="px-6 py-4">Category</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4">Votes</th>
-                  <th className="px-6 py-4">Reported On</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-850">
-                {issues.map(i => (
-                  <tr key={i.id} className="hover:bg-slate-850/30 transition">
-                    <td className="px-6 py-4 font-bold text-white max-w-xs truncate">
-                      <Link to={`/issue/${i.id}`} className="hover:text-emerald-400 transition">{i.title}</Link>
-                    </td>
-                    <td className="px-6 py-4 text-slate-300">
-                      {i.category.name}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded border ${
-                        i.status === 'ESCALATED' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
-                        i.status === 'IN_PROGRESS' ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' :
-                        i.status === 'RESOLVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
-                        i.status === 'MARKED_FAKE' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
-                        'bg-sky-500/10 text-sky-400 border-sky-500/20'
-                      }`}>
-                        {i.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-slate-400 font-mono">
-                      {i.meTooCount}
-                    </td>
-                    <td className="px-6 py-4 text-slate-500">
-                      {new Date(i.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <Link
-                        to={`/issue/${i.id}`}
-                        className="bg-slate-800 hover:bg-emerald-400 hover:text-slate-900 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-750"
-                      >
-                        Audit Details
-                      </Link>
-                    </td>
+          <div className="premium-card overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm whitespace-nowrap">
+                <thead className="bg-[#FAFAF8] text-[#666666] uppercase text-xs font-bold border-b border-[#E8E8E8]">
+                  <tr>
+                    <th className="px-6 py-5">Title</th>
+                    <th className="px-6 py-5">Category</th>
+                    <th className="px-6 py-5">Status</th>
+                    <th className="px-6 py-5">Votes</th>
+                    <th className="px-6 py-5">Reported On</th>
+                    <th className="px-6 py-5 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-[#E8E8E8]">
+                  {issues.map(i => (
+                    <tr key={i.id} className="hover:bg-[#FAFAF8] transition-colors">
+                      <td className="px-6 py-4 font-bold text-[#111111] max-w-xs truncate">
+                        <Link to={`/issue/${i.id}`} className="hover:text-[#FFD21F] transition-colors">{i.title}</Link>
+                      </td>
+                      <td className="px-6 py-4 text-[#666666] font-medium">
+                        {i.category.name}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border shadow-sm ${
+                          i.status === 'ESCALATED' ? 'bg-amber-50 text-amber-600 border-amber-200' :
+                          i.status === 'IN_PROGRESS' ? 'bg-indigo-50 text-indigo-600 border-indigo-200' :
+                          i.status === 'RESOLVED' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' :
+                          i.status === 'MARKED_FAKE' ? 'bg-rose-50 text-rose-600 border-rose-200' :
+                          'bg-sky-50 text-sky-600 border-sky-200'
+                        }`}>
+                          {i.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-[#666666] font-mono font-medium">
+                        {i.meTooCount}
+                      </td>
+                      <td className="px-6 py-4 text-[#666666] font-medium">
+                        {new Date(i.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <Link
+                          to={`/issue/${i.id}`}
+                          className="bg-white hover:bg-[#FFD21F] hover:text-[#111111] text-[#666666] hover:border-[#FFD21F] px-4 py-2 rounded-xl text-xs font-bold transition-all border border-[#E8E8E8] shadow-sm"
+                        >
+                          Audit Details
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>

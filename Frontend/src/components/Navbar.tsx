@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
-import { Bell, User as UserIcon, LogOut, Award, ShieldAlert, Layers } from 'lucide-react';
+import { Bell, User as UserIcon, LogOut, Award, ShieldAlert } from 'lucide-react';
+import gvLogo from '../assets/gv-logo.jpg';
 
 interface Notification {
   id: number;
@@ -52,44 +53,44 @@ export const Navbar: React.FC = () => {
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <nav className="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-[#E8E8E8]">
+      <div className="max-w-[90rem] mx-auto px-6">
+        <div className="flex items-center justify-between h-[72px]">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <Layers className="h-8 w-8 text-emerald-400 animate-pulse" />
-              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-                NearByNeeds
+            <Link to="/" className="flex items-center gap-[12px] shrink-0 whitespace-nowrap group overflow-hidden">
+              <img src={gvLogo} alt="GV Logo" className="h-[28px] md:h-[32px] lg:h-[36px] max-h-[40px] w-auto object-contain overflow-hidden transition-transform group-hover:scale-105" />
+              <span className="font-heading font-bold text-[1.6rem] tracking-tight text-[#111111]" style={{ letterSpacing: '-0.5px' }}>
+                GeoVoice
               </span>
             </Link>
-            <div className="hidden md:block ml-10 flex items-baseline space-x-4">
-              <Link to="/" className="hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium">Dashboard</Link>
+            <div className="hidden lg:flex ml-8 items-baseline space-x-2">
+              <Link to="/" className="text-[#666666] hover:text-[#111111] hover:bg-[#F5F5F2] transition-colors px-3 py-2 rounded-lg text-sm font-semibold">Dashboard</Link>
               {user && user.role === 'CITIZEN' && (
-                <Link to="/rewards" className="hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1">
-                  <Award className="h-4 w-4 text-amber-400" /> Rewards Shop
+                <Link to="/rewards" className="text-[#666666] hover:text-[#111111] hover:bg-[#F5F5F2] transition-colors px-3 py-2 rounded-lg text-sm font-semibold flex items-center gap-1.5">
+                  <Award className="h-4 w-4 text-[#FFD21F]" /> Rewards
                 </Link>
               )}
               {user && (user.role === 'MUNICIPAL_ADMIN' || user.role === 'SUPER_ADMIN') && (
-                <Link to="/admin" className="hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1 text-amber-400 border border-amber-500/30 bg-amber-500/5">
-                  <ShieldAlert className="h-4 w-4" /> Admin Dashboard
+                <Link to="/admin" className="text-[#111111] hover:bg-[#FFD21F]/10 transition-colors px-3 py-2 rounded-lg text-sm font-semibold flex items-center gap-1.5 bg-[#FFD21F]/5 border border-[#FFD21F]/20">
+                  <ShieldAlert className="h-4 w-4 text-[#FFD21F]" /> Admin Dashboard
                 </Link>
               )}
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {user ? (
               <>
                 {/* User Points Badge */}
                 {user.role === 'CITIZEN' && (
-                  <div className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 text-emerald-300">
-                    <span className="h-2 w-2 rounded-full bg-emerald-400"></span>
-                    {user.rewardPoints} points
+                  <div className="bg-[#FAFAF8] border border-[#E8E8E8] px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 text-[#111111] shadow-sm">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#FFD21F]"></span>
+                    {user.rewardPoints} pts
                   </div>
                 )}
 
                 {/* User Role Badge */}
-                <div className="hidden sm:block text-xs bg-slate-800 px-2.5 py-1 rounded-md text-slate-400 border border-slate-700 font-mono">
+                <div className="hidden sm:block text-[10px] bg-[#F5F5F2] px-2.5 py-1 rounded-md text-[#666666] border border-[#E8E8E8] font-bold tracking-wider uppercase">
                   {user.role}
                 </div>
 
@@ -97,40 +98,40 @@ export const Navbar: React.FC = () => {
                 <div className="relative">
                   <button 
                     onClick={() => setShowNotifications(!showNotifications)}
-                    className="p-1 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none relative"
+                    className="p-1.5 rounded-full text-[#666666] hover:text-[#111111] hover:bg-[#F5F5F2] transition-colors focus:outline-none relative"
                   >
-                    <Bell className="h-6 w-6" />
+                    <Bell className="h-5 w-5" />
                     {unreadCount > 0 && (
-                      <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-rose-500 rounded-full">
+                      <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-[9px] font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-red-500 rounded-full shadow-sm">
                         {unreadCount}
                       </span>
                     )}
                   </button>
 
                   {showNotifications && (
-                    <div className="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-2xl bg-slate-800 border border-slate-700 ring-1 ring-black ring-opacity-5 py-1 text-slate-100 max-h-96 overflow-y-auto">
-                      <div className="px-4 py-2 border-b border-slate-700 font-bold text-sm flex justify-between items-center">
+                    <div className="origin-top-right absolute right-0 mt-2 w-80 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] bg-white border border-[#E8E8E8] py-1 max-h-96 overflow-y-auto">
+                      <div className="px-4 py-3 border-b border-[#E8E8E8] font-bold text-sm flex justify-between items-center text-[#111111]">
                         <span>Notifications</span>
-                        <span className="text-xs text-slate-400">{unreadCount} unread</span>
+                        <span className="text-xs text-[#666666] font-medium">{unreadCount} unread</span>
                       </div>
                       {notifications.length === 0 ? (
-                        <div className="px-4 py-6 text-center text-slate-400 text-sm">No notifications</div>
+                        <div className="px-4 py-8 text-center text-[#666666] text-sm">No notifications</div>
                       ) : (
                         notifications.map(n => (
                           <div 
                             key={n.id} 
                             onClick={() => handleMarkAsRead(n.id)}
-                            className={`px-4 py-3 hover:bg-slate-700 transition cursor-pointer border-b border-slate-700/50 flex flex-col gap-1 ${!n.isRead ? 'bg-slate-700/30 border-l-2 border-emerald-400' : ''}`}
+                            className={`px-4 py-3 hover:bg-[#F5F5F2] transition-colors cursor-pointer border-b border-[#E8E8E8]/50 flex flex-col gap-1.5 ${!n.isRead ? 'bg-[#FFD21F]/5 border-l-2 border-l-[#FFD21F]' : ''}`}
                           >
                             <div className="flex justify-between items-start">
-                              <span className={`text-xs px-1.5 py-0.5 rounded font-mono ${n.type === 'PENALTY' ? 'bg-rose-500/10 text-rose-400' : n.type === 'RESOLUTION' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-600/30 text-slate-300'}`}>
+                              <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider ${n.type === 'PENALTY' ? 'bg-red-50 text-red-600' : n.type === 'RESOLUTION' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-[#666666]'}`}>
                                 {n.type}
                               </span>
-                              <span className="text-[10px] text-slate-500">
+                              <span className="text-[10px] text-[#666666] font-medium">
                                 {new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                               </span>
                             </div>
-                            <p className="text-sm text-slate-200">{n.message}</p>
+                            <p className="text-sm text-[#111111] leading-snug">{n.message}</p>
                           </div>
                         ))
                       )}
@@ -139,28 +140,28 @@ export const Navbar: React.FC = () => {
                 </div>
 
                 {/* Profile icon */}
-                <Link to="/profile" className="flex items-center space-x-1 hover:text-emerald-300">
-                  <div className="bg-slate-800 p-1.5 rounded-full border border-slate-700">
-                    <UserIcon className="h-5 w-5" />
+                <Link to="/profile" className="flex items-center space-x-2 text-[#666666] hover:text-[#111111] transition-colors ml-2 border-l border-[#E8E8E8] pl-4">
+                  <div className="bg-[#F5F5F2] p-1.5 rounded-full border border-[#E8E8E8]">
+                    <UserIcon className="h-4 w-4" />
                   </div>
-                  <span className="hidden md:inline text-sm font-medium">{user.fullName}</span>
+                  <span className="hidden md:inline text-sm font-semibold">{user.fullName}</span>
                 </Link>
 
                 {/* Logout */}
                 <button 
                   onClick={handleLogout}
-                  className="p-1 rounded-full text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition"
+                  className="p-1.5 rounded-full text-[#666666] hover:text-red-500 hover:bg-red-50 transition-colors ml-1"
                   title="Logout"
                 >
-                  <LogOut className="h-5 w-5" />
+                  <LogOut className="h-4 w-4" />
                 </button>
               </>
             ) : (
-              <div className="flex items-center space-x-3">
-                <Link to="/login" className="text-sm font-medium hover:text-emerald-400 px-3 py-2">
+              <div className="flex items-center space-x-4">
+                <Link to="/login" className="text-sm font-semibold text-[#666666] hover:text-[#111111] transition-colors px-2 py-2">
                   Sign In
                 </Link>
-                <Link to="/register" className="text-sm font-medium bg-emerald-500 hover:bg-emerald-600 px-3.5 py-2 rounded-md transition text-slate-900 font-bold">
+                <Link to="/register" className="btn-primary text-sm px-5 py-2.5 shadow-sm">
                   Get Started
                 </Link>
               </div>

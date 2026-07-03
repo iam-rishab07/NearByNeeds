@@ -87,7 +87,7 @@ export const PostIssue: React.FC = () => {
         setLongitude(lng.toFixed(6));
         setLocating(false);
 
-        setAddressText(`Pune City Jurisdiction, Maharashtra`);
+        setAddressText(`Your City Jurisdiction`);
       },
       (err) => {
         console.error("Location error", err);
@@ -137,68 +137,71 @@ export const PostIssue: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-950 text-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto space-y-6">
+    <div className="min-h-[calc(100vh-4rem)] bg-[var(--color-bg)] text-[#111111] py-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="bg-glow top-0 left-0"></div>
+      <div className="bg-glow bottom-0 right-0"></div>
+
+      <div className="max-w-3xl mx-auto space-y-6 relative z-10">
         
         {/* Back Link */}
         <button 
           onClick={() => navigate('/')}
-          className="flex items-center gap-1.5 text-slate-400 hover:text-white transition text-sm font-semibold"
+          className="flex items-center gap-2 text-[#666666] hover:text-[#111111] transition-colors text-sm font-bold w-fit"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Feed
         </button>
 
-        <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl space-y-8">
-          <div>
-            <h1 className="text-2xl font-extrabold flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-emerald-400" /> Report a Local Civic Issue
+        <div className="premium-card p-10 space-y-8">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-extrabold flex items-center gap-3 text-[#111111]">
+              <Sparkles className="h-7 w-7 text-[#FFD21F]" /> Report a Local Civic Issue
             </h1>
-            <p className="text-slate-400 text-sm mt-1">
-              Add details, upload photos, and geolocate the issue. Once verified by 5 other citizens, it escalates to ward authorities.
+            <p className="text-[#666666] text-sm leading-relaxed max-w-xl font-medium">
+              Add details, upload photos, and geolocate the issue. Once verified by 5 other citizens, it escalates to municipal authorities.
             </p>
           </div>
 
           {error && (
-            <div className="bg-rose-500/10 border border-rose-500/30 text-rose-400 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm font-medium shadow-sm">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-7">
             
             {/* Title */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Issue Title</label>
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-[#666666] uppercase tracking-widest">Issue Title</label>
               <input
                 type="text"
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Large pothole near Central Library entrance"
-                className="bg-slate-950 border border-slate-800 text-white rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-3 outline-none text-sm"
+                className="premium-input block w-full p-3.5 text-sm"
               />
             </div>
 
             {/* Description */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Detailed Description</label>
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-[#666666] uppercase tracking-widest">Detailed Description</label>
               <textarea
                 required
                 rows={4}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe the issue, its severity, and how it impacts traffic or local citizens..."
-                className="bg-slate-950 border border-slate-800 text-white rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-3 outline-none text-sm resize-none"
+                className="premium-input block w-full p-3.5 text-sm resize-none"
               />
             </div>
 
             {/* Category */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Category</label>
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-[#666666] uppercase tracking-widest">Category</label>
               <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                className="bg-slate-950 border border-slate-800 text-white rounded-lg block w-full p-3 outline-none text-sm"
+                className="premium-input block w-full p-3.5 text-sm appearance-none"
               >
                 {categories.map(c => (
                   <option key={c.id} value={c.id}>{c.name}</option>
@@ -207,25 +210,25 @@ export const PostIssue: React.FC = () => {
             </div>
 
             {/* Location Section */}
-            <div className="bg-slate-950 p-5 border border-slate-850 rounded-xl space-y-4">
-              <div className="flex justify-between items-center">
-                <h3 className="text-sm font-bold text-slate-200 flex items-center gap-1.5">
-                  <MapPin className="h-4 w-4 text-emerald-400" /> Geolocation Coordinates
+            <div className="bg-[#FAFAF8] p-6 border border-[#E8E8E8] rounded-2xl space-y-5">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                <h3 className="text-sm font-extrabold text-[#111111] flex items-center gap-2">
+                  <MapPin className="h-5 w-5 text-[#FFD21F]" /> Geolocation Coordinates
                 </h3>
                 <button
                   type="button"
                   onClick={handleDetectLocation}
                   disabled={locating}
-                  className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition"
+                  className="bg-white hover:bg-[#F5F5F2] text-[#111111] border border-[#E8E8E8] text-xs font-bold px-4 py-2 rounded-xl flex items-center justify-center gap-2 transition shadow-sm hover:border-[#FFD21F] disabled:opacity-50"
                 >
-                  <Navigation className="h-3.5 w-3.5" />
+                  <Navigation className={`h-4 w-4 text-[#FFD21F] ${locating ? 'animate-pulse' : ''}`} />
                   {locating ? 'Locating...' : 'Auto-detect Location'}
                 </button>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-semibold text-slate-500 uppercase mb-1">Latitude</label>
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] font-bold text-[#666666] uppercase tracking-wider">Latitude</label>
                   <input
                     type="number"
                     step="any"
@@ -233,11 +236,11 @@ export const PostIssue: React.FC = () => {
                     value={latitude}
                     onChange={(e) => setLatitude(e.target.value)}
                     placeholder="18.5204"
-                    className="bg-slate-900 border border-slate-850 text-white rounded-lg block w-full p-2.5 outline-none text-xs"
+                    className="premium-input block w-full p-3 text-xs"
                   />
                 </div>
-                <div>
-                  <label className="block text-[10px] font-semibold text-slate-500 uppercase mb-1">Longitude</label>
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] font-bold text-[#666666] uppercase tracking-wider">Longitude</label>
                   <input
                     type="number"
                     step="any"
@@ -245,49 +248,51 @@ export const PostIssue: React.FC = () => {
                     value={longitude}
                     onChange={(e) => setLongitude(e.target.value)}
                     placeholder="73.8567"
-                    className="bg-slate-900 border border-slate-850 text-white rounded-lg block w-full p-2.5 outline-none text-xs"
+                    className="premium-input block w-full p-3 text-xs"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[10px] font-semibold text-slate-500 uppercase mb-1">Address Landmark</label>
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-[#666666] uppercase tracking-wider">Address Landmark</label>
                 <input
                   type="text"
                   value={addressText}
                   onChange={(e) => setAddressText(e.target.value)}
                   placeholder="e.g. Opposite CCD, Model Colony Road"
-                  className="bg-slate-900 border border-slate-850 text-white rounded-lg block w-full p-2.5 outline-none text-xs"
+                  className="premium-input block w-full p-3 text-sm"
                 />
               </div>
             </div>
 
             {/* Photo Upload */}
             <div className="space-y-3">
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Photo Evidence</label>
+              <label className="block text-xs font-bold text-[#666666] uppercase tracking-widest">Photo Evidence</label>
               
               <div className="flex items-center justify-center w-full">
                 {filePreview ? (
-                  <div className="w-full relative rounded-xl border border-slate-800 overflow-hidden bg-slate-950 flex justify-center">
+                  <div className="w-full relative rounded-2xl border border-[#E8E8E8] overflow-hidden bg-[#F5F5F2] flex justify-center p-2">
                     <img 
                       src={filePreview} 
                       alt="Uploaded preview" 
-                      className="max-h-64 object-contain"
+                      className="max-h-72 object-contain rounded-xl"
                     />
                     <button
                       type="button"
                       onClick={() => { setFile(null); setFilePreview(''); }}
-                      className="absolute top-2 right-2 bg-slate-900/80 hover:bg-rose-600 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-800 transition"
+                      className="absolute top-4 right-4 bg-white/90 backdrop-blur-md hover:bg-red-50 hover:text-red-600 px-4 py-2 rounded-xl text-xs font-bold border border-[#E8E8E8] text-[#111111] transition-colors shadow-sm"
                     >
                       Change Photo
                     </button>
                   </div>
                 ) : (
-                  <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-slate-800 border-dashed rounded-xl cursor-pointer bg-slate-950 hover:bg-slate-900/40 hover:border-slate-700 transition">
+                  <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-[#E8E8E8] border-dashed rounded-2xl cursor-pointer bg-[#FAFAF8] hover:bg-[#F5F5F2] hover:border-[#FFD21F]/50 transition-all group">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <ImageIcon className="w-8 h-8 text-slate-500 mb-2" />
-                      <p className="mb-1 text-xs text-slate-400 font-bold">Click to upload photo evidence</p>
-                      <p className="text-[10px] text-slate-500">PNG, JPG or WEBP (Max 5MB)</p>
+                      <div className="p-4 bg-white rounded-full mb-3 group-hover:bg-[#FFD21F]/10 border border-[#E8E8E8] transition-colors shadow-sm">
+                        <ImageIcon className="w-8 h-8 text-[#666666] group-hover:text-[#FFD21F] transition-colors" />
+                      </div>
+                      <p className="mb-1 text-sm text-[#111111] font-bold">Click to upload photo evidence</p>
+                      <p className="text-xs text-[#666666] font-medium tracking-wide">PNG, JPG or WEBP (Max 5MB)</p>
                     </div>
                     <input 
                       type="file" 
@@ -301,13 +306,13 @@ export const PostIssue: React.FC = () => {
             </div>
 
             {/* Submit button */}
-            <div className="pt-4 border-t border-slate-800">
+            <div className="pt-6 border-t border-[#E8E8E8]">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-slate-900 bg-emerald-400 hover:bg-emerald-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition duration-150 disabled:opacity-50 gap-2 items-center"
+                className="w-full flex justify-center py-4 px-4 text-sm btn-primary shadow-[0_4px_20px_rgba(255,210,31,0.25)] disabled:opacity-50 gap-2 items-center"
               >
-                <Send className="h-4 w-4" />
+                <Send className="h-5 w-5" />
                 {loading ? 'Publishing report...' : 'Submit Issue & Start Voting'}
               </button>
             </div>

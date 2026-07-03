@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Plus, Search, MapPin, ThumbsUp, MessageSquare, Calendar, Filter, ArrowUpDown } from 'lucide-react';
-
 interface Issue {
   id: number;
   title: string;
@@ -136,34 +135,71 @@ export const Dashboard: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'OPEN': return 'bg-sky-500/10 text-sky-400 border-sky-500/20';
-      case 'ESCALATED': return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-      case 'IN_PROGRESS': return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20';
-      case 'RESOLVED': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-      case 'MARKED_FAKE': return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
-      case 'REJECTED': return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
-      default: return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
+      case 'OPEN': return 'bg-sky-50 text-sky-600 border-sky-100';
+      case 'ESCALATED': return 'bg-amber-50 text-amber-600 border-amber-100';
+      case 'IN_PROGRESS': return 'bg-indigo-50 text-indigo-600 border-indigo-100';
+      case 'RESOLVED': return 'bg-emerald-50 text-emerald-600 border-emerald-100';
+      case 'MARKED_FAKE': return 'bg-rose-50 text-rose-600 border-rose-100';
+      case 'REJECTED': return 'bg-gray-50 text-gray-600 border-gray-200';
+      default: return 'bg-gray-50 text-gray-600 border-gray-200';
     }
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-950 text-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-[calc(100vh-4rem)] bg-[var(--color-bg)] text-[#111111] py-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="bg-glow top-0 left-0"></div>
+      <div className="bg-glow bottom-0 right-0"></div>
+
+      <div className="max-w-7xl mx-auto space-y-8 relative z-10">
         
+        {/* Landing Page Hero Section (Only shown to guests) */}
+        {!user && (
+          <div className="relative premium-card overflow-hidden rounded-[32px] mb-12 border-0 bg-[#FAFAF8] shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#FAFAF8] via-[#F5F5F2] to-[#FFD21F]/10 z-0"></div>
+            
+            {/* Floating ambient shapes */}
+            <div className="absolute top-10 right-20 w-64 h-64 bg-[#FFD21F]/20 rounded-full blur-[80px] animate-pulse-glow z-0"></div>
+            <div className="absolute bottom-10 left-20 w-80 h-80 bg-amber-200/20 rounded-full blur-[100px] animate-pulse-glow delay-200 z-0"></div>
+
+            <div className="relative z-10 px-8 py-24 sm:px-16 lg:px-24 flex flex-col items-center text-center space-y-8 animate-fade-in-up">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-[#666666] text-xs font-bold uppercase tracking-widest shadow-sm animate-float">
+                Smart City, Better City
+              </span>
+              
+              <h1 className="text-5xl md:text-7xl font-extrabold text-[#111111] tracking-tight leading-tight max-w-4xl">
+                Let's make <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD21F] to-amber-500">Your City</span> better, together.
+              </h1>
+              
+              <p className="text-lg md:text-xl text-[#666666] max-w-2xl font-medium leading-relaxed">
+                Report issues, vote, and track real change in your community. Join thousands of active citizens transforming their neighborhoods.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Link to="/login" className="btn-primary px-8 py-4 text-base shadow-[0_8px_30px_rgba(255,210,31,0.3)]">
+                  Report an Issue →
+                </Link>
+                <Link to="/register" className="btn-secondary px-8 py-4 text-base bg-white">
+                  Get Started
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Top Header Card */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
-          <div className="space-y-1">
-            <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 premium-card p-8 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <div className="space-y-2">
+            <h1 className="text-3xl font-extrabold tracking-tight text-[#111111]">
               Civic Issue Feed
             </h1>
-            <p className="text-sm text-slate-400">
-              Browse issues reported in Pune municipal corporation wards, vote "Me Too" to validate, and track escalations.
+            <p className="text-sm text-[#666666]">
+              Browse issues reported in your area, vote "Me Too" to validate, and track escalations.
             </p>
           </div>
           {user && user.role === 'CITIZEN' && (
             <Link 
               to="/post-issue"
-              className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-emerald-500/10"
+              className="flex items-center justify-center gap-2 btn-primary px-6 py-3 shadow-[0_4px_14px_rgba(255,210,31,0.25)]"
             >
               <Plus className="h-5 w-5" /> Report Civic Issue
             </Link>
@@ -171,11 +207,11 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Filters and Controls */}
-        <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-4 shadow-lg">
+        <div className="premium-card p-5 space-y-4 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search Input */}
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+              <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
                 <Search className="h-5 w-5" />
               </span>
               <input
@@ -183,17 +219,17 @@ export const Dashboard: React.FC = () => {
                 placeholder="Search issues..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="bg-slate-950 border border-slate-800 text-white rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full pl-10 p-2.5 outline-none text-sm"
+                className="premium-input block w-full pl-11 p-3 text-sm"
               />
             </div>
 
             {/* Category Filter */}
             <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-slate-400 shrink-0" />
+              <Filter className="h-4 w-4 text-gray-400 shrink-0" />
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="bg-slate-950 border border-slate-800 text-white rounded-lg block w-full p-2.5 outline-none text-sm"
+                className="premium-input block w-full p-3 text-sm appearance-none"
               >
                 <option value="">All Categories</option>
                 {categories.map(c => (
@@ -202,13 +238,11 @@ export const Dashboard: React.FC = () => {
               </select>
             </div>
 
-
-
             {/* Status Filter */}
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="bg-slate-950 border border-slate-800 text-white rounded-lg block w-full p-2.5 outline-none text-sm"
+              className="premium-input block w-full p-3 text-sm appearance-none"
             >
               <option value="">All Statuses</option>
               <option value="OPEN">Open</option>
@@ -219,8 +253,8 @@ export const Dashboard: React.FC = () => {
             </select>
           </div>
 
-          <div className="flex justify-between items-center pt-2 border-t border-slate-800 text-xs text-slate-400">
-            <div>
+          <div className="flex justify-between items-center pt-3 border-t border-[#E8E8E8] text-xs text-[#666666]">
+            <div className="font-semibold">
               Showing {issues.length} issues
             </div>
             <div className="flex items-center gap-2">
@@ -228,14 +262,14 @@ export const Dashboard: React.FC = () => {
               <span>Sort by:</span>
               <button 
                 onClick={() => setSortBy('createdAt')}
-                className={`font-semibold hover:text-white transition ${sortBy === 'createdAt' ? 'text-emerald-400' : ''}`}
+                className={`font-bold transition ${sortBy === 'createdAt' ? 'text-[#111111]' : 'hover:text-[#111111]'}`}
               >
                 Recent
               </button>
-              <span className="text-slate-700">|</span>
+              <span className="text-[#E8E8E8]">|</span>
               <button 
                 onClick={() => setSortBy('meTooCount')}
-                className={`font-semibold hover:text-white transition ${sortBy === 'meTooCount' ? 'text-emerald-400' : ''}`}
+                className={`font-bold transition ${sortBy === 'meTooCount' ? 'text-[#111111]' : 'hover:text-[#111111]'}`}
               >
                 Most Upvoted
               </button>
@@ -246,75 +280,76 @@ export const Dashboard: React.FC = () => {
         {/* Issue Cards Grid */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-400"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FFD21F]"></div>
           </div>
         ) : issues.length === 0 ? (
-          <div className="bg-slate-900 border border-slate-850 p-12 text-center rounded-2xl">
-            <p className="text-slate-400 text-lg">No reported civic issues found matching your filters.</p>
-            <p className="text-slate-500 text-sm mt-1">Be the first to file a report in your ward!</p>
+          <div className="premium-card p-12 text-center animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+            <p className="text-[#111111] font-bold text-lg">No reported civic issues found matching your filters.</p>
+            <p className="text-[#666666] text-sm mt-1">Be the first to file a report in your area!</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {issues.map(issue => (
+            {issues.map((issue, index) => (
               <div 
                 key={issue.id}
-                className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition duration-200 flex flex-col group"
+                className="premium-card overflow-hidden flex flex-col group border border-[#E8E8E8] hover:border-[#FFD21F]/50 animate-fade-in-up"
+                style={{ animationDelay: `${(index % 9) * 100 + 150}ms` }}
               >
                 {/* Photo cover */}
-                <div className="h-48 w-full bg-slate-950 relative overflow-hidden">
+                <div className="h-48 w-full bg-[#F5F5F2] relative overflow-hidden">
                   {issue.photoUrls ? (
                     <img 
                       src={`http://localhost:8080${issue.photoUrls}`} 
                       alt={issue.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-slate-600 bg-slate-950">
+                    <div className="w-full h-full flex items-center justify-center text-[#666666] bg-[#F5F5F2] font-semibold text-sm">
                       No Photo Available
                     </div>
                   )}
                   {/* Category badge */}
-                  <span className="absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-slate-900/80 backdrop-blur text-emerald-400 border border-emerald-500/20">
+                  <span className="absolute top-4 left-4 text-[10px] uppercase font-extrabold tracking-wider px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[#111111] border border-[#E8E8E8] shadow-sm">
                     {issue.category.name}
                   </span>
                   
                   {/* Status badge */}
-                  <span className={`absolute top-3 right-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border ${getStatusColor(issue.status)}`}>
+                  <span className={`absolute top-4 right-4 text-[9px] uppercase font-extrabold tracking-wider px-3 py-1 rounded-full border shadow-sm ${getStatusColor(issue.status)}`}>
                     {issue.status}
                   </span>
                 </div>
 
-                <div className="p-5 flex-1 flex flex-col space-y-4">
+                <div className="p-6 flex-1 flex flex-col space-y-4">
                   <div className="space-y-2 flex-1">
-                    <h3 className="font-bold text-lg text-white group-hover:text-emerald-400 transition leading-snug">
+                    <h3 className="font-bold text-lg text-[#111111] group-hover:text-[#FFD21F] transition-colors leading-snug">
                       <Link to={`/issue/${issue.id}`}>{issue.title}</Link>
                     </h3>
-                    <p className="text-slate-400 text-sm line-clamp-3 leading-relaxed">
+                    <p className="text-[#666666] text-sm line-clamp-3 leading-relaxed font-medium">
                       {issue.description}
                     </p>
                   </div>
 
                   {/* Ward / Location info */}
-                  <div className="space-y-1.5 text-xs text-slate-400 border-t border-slate-850 pt-3">
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5 text-slate-500 shrink-0" />
-                      <span className="truncate">Pune City Jurisdiction</span>
+                  <div className="space-y-2 text-xs text-[#666666] border-t border-[#E8E8E8] pt-4">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-[#FFD21F] shrink-0" />
+                      <span className="truncate font-semibold text-[#111111]">Location Details</span>
                     </div>
                     {issue.addressText && (
-                      <div className="text-[11px] text-slate-500 pl-5 truncate">
+                      <div className="text-[11px] text-[#666666] pl-6 truncate font-medium">
                         {issue.addressText}
                       </div>
                     )}
-                    <div className="flex items-center gap-1.5 pl-5 text-[10px] text-slate-600 font-mono">
+                    <div className="flex items-center gap-1.5 pl-6 text-[10px] text-[#666666] font-mono">
                       LAT: {issue.latitude.toFixed(5)}, LNG: {issue.longitude.toFixed(5)}
                     </div>
                   </div>
 
                   {/* Footer details */}
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-850 text-xs">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3.5 w-3.5 text-slate-500" />
-                      <span className="text-slate-500">
+                  <div className="flex items-center justify-between pt-4 border-t border-[#E8E8E8] text-xs">
+                    <div className="flex items-center gap-1.5 bg-[#F5F5F2] px-2.5 py-1.5 rounded-lg border border-[#E8E8E8]">
+                      <Calendar className="h-3.5 w-3.5 text-[#666666]" />
+                      <span className="text-[#111111] font-bold">
                         {new Date(issue.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
                       </span>
                     </div>
@@ -325,20 +360,20 @@ export const Dashboard: React.FC = () => {
                         <button
                           onClick={(e) => handleVote(issue.id, e)}
                           disabled={votingMap[issue.id]}
-                          className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-750 px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-200 hover:text-emerald-400"
+                          className="flex items-center gap-1.5 bg-white hover:bg-[#F5F5F2] border border-[#E8E8E8] px-3 py-1.5 rounded-lg text-xs font-bold transition text-[#666666] hover:text-[#111111] shadow-sm disabled:opacity-50"
                         >
                           <ThumbsUp className="h-3.5 w-3.5" />
                           <span>Me Too ({issue.meTooCount})</span>
                         </button>
                       ) : (
-                        <div className="flex items-center gap-1 text-slate-500 px-2 py-1 rounded bg-slate-950 text-xs">
-                          <ThumbsUp className="h-3.5 w-3.5" />
+                        <div className="flex items-center gap-1.5 text-[#666666] px-2.5 py-1.5 rounded-lg bg-[#FAFAF8] border border-[#E8E8E8] text-xs font-bold shadow-sm">
+                          <ThumbsUp className="h-3.5 w-3.5 text-[#FFD21F]" />
                           <span>Votes: {issue.meTooCount}</span>
                         </div>
                       )}
                       <Link 
                         to={`/issue/${issue.id}`}
-                        className="bg-slate-800 hover:bg-emerald-400 hover:text-slate-900 p-1.5 rounded-lg border border-slate-750 transition text-slate-400"
+                        className="bg-white hover:bg-[#FFD21F] hover:text-[#111111] hover:border-[#FFD21F] p-1.5 rounded-lg border border-[#E8E8E8] transition text-[#666666] shadow-sm"
                         title="View details & comments"
                       >
                         <MessageSquare className="h-4 w-4" />
@@ -353,19 +388,19 @@ export const Dashboard: React.FC = () => {
 
         {/* Paging controls */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-4 pt-4 border-t border-slate-900">
+          <div className="flex items-center justify-center gap-4 pt-6 border-t border-[#E8E8E8]">
             <button
               disabled={page === 0}
               onClick={() => setPage(prev => Math.max(0, prev - 1))}
-              className="bg-slate-900 border border-slate-800 hover:border-slate-700 px-4 py-2 rounded-lg text-sm transition disabled:opacity-30"
+              className="btn-secondary px-5 py-2.5 text-sm disabled:opacity-30"
             >
               Previous
             </button>
-            <span className="text-xs text-slate-500 font-mono">Page {page + 1} of {totalPages}</span>
+            <span className="text-xs text-[#666666] font-mono bg-white border border-[#E8E8E8] px-3 py-1.5 rounded-md font-bold shadow-sm">Page {page + 1} of {totalPages}</span>
             <button
               disabled={page >= totalPages - 1}
               onClick={() => setPage(prev => prev + 1)}
-              className="bg-slate-900 border border-slate-800 hover:border-slate-700 px-4 py-2 rounded-lg text-sm transition disabled:opacity-30"
+              className="btn-secondary px-5 py-2.5 text-sm disabled:opacity-30"
             >
               Next
             </button>
