@@ -29,6 +29,7 @@ interface Category {
 export const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const filePrefix = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/api$/, '') : (import.meta.env.DEV ? 'http://localhost:8080' : '');
   const [issues, setIssues] = useState<Issue[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   
@@ -299,7 +300,7 @@ export const Dashboard: React.FC = () => {
                 <div className="h-48 w-full bg-[#F5F5F2] relative overflow-hidden">
                   {issue.photoUrls ? (
                     <img 
-                      src={`http://localhost:8080${issue.photoUrls}`} 
+                      src={`${filePrefix}${issue.photoUrls}`} 
                       alt={issue.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                     />

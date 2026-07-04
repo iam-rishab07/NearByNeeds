@@ -33,6 +33,7 @@ export const IssueDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user, refreshUser } = useAuth();
+  const filePrefix = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/api$/, '') : (import.meta.env.DEV ? 'http://localhost:8080' : '');
   
   const [issue, setIssue] = useState<Issue | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -160,7 +161,7 @@ export const IssueDetail: React.FC = () => {
               <div className="h-80 w-full bg-[#F5F5F2] relative flex justify-center border-b border-[#E8E8E8]">
                 {issue.photoUrls ? (
                   <img 
-                    src={`http://localhost:8080${issue.photoUrls}`} 
+                    src={`${filePrefix}${issue.photoUrls}`} 
                     alt={issue.title}
                     className="h-full max-w-full object-contain"
                   />

@@ -64,7 +64,8 @@ const MapDashboard: React.FC = () => {
 
     const fetchNearbyIssues = async (lat: number, lng: number) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/issues/nearby?lat=${lat}&lon=${lng}&radius=15.0`);
+            const apiBase = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080/api' : '/api');
+            const response = await fetch(`${apiBase}/issues/nearby?lat=${lat}&lon=${lng}&radius=15.0`);
             if (response.ok) {
                 const data: Issue[] = await response.json();
                 setIssues(data);
@@ -78,7 +79,8 @@ const MapDashboard: React.FC = () => {
 
     const handleUpvote = async (id: number) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/issues/${id}/upvote`, {
+            const apiBase = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080/api' : '/api');
+            const response = await fetch(`${apiBase}/issues/${id}/upvote`, {
                 method: 'PATCH'
             });
             if (response.ok) {
