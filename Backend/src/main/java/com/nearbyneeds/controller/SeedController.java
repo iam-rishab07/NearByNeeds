@@ -2,6 +2,8 @@ package com.nearbyneeds.controller;
 
 import com.nearbyneeds.model.*;
 import com.nearbyneeds.repository.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,9 @@ public class SeedController {
     private final RewardCatalogRepository rewardCatalogRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     public SeedController(UserRepository userRepository,
                           IssueCategoryRepository categoryRepository,
@@ -36,10 +41,20 @@ public class SeedController {
     @Transactional
     public ResponseEntity<?> seedData() {
         try {
-            // 1. Clear existing data in reverse order of relationships
-            userRepository.deleteAll();
-            categoryRepository.deleteAll();
-            rewardCatalogRepository.deleteAll();
+            // 1. Clear existing data using native SQL to bypass foreign key constraints
+            entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE comments").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE me_too_votes").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE issue_votes").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE notifications").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE penalties").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE redemptions").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE reward_transactions").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE issues").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE reward_catalog").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE users").executeUpdate();
+            entityManager.createNativeQuery("TRUNCATE TABLE issue_categories").executeUpdate();
+            entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
 
             // 2. Seed Categories
             categoryRepository.save(new IssueCategory("Garbage", "/icons/garbage.svg"));
@@ -65,39 +80,41 @@ public class SeedController {
             rewardCatalogRepository.save(new RewardCatalog("Premium Community Hero Hoodie", "Warm heavy-blend fleece hoodie for top-tier contributors.", 350, 10, true));
 
             // 4. Seed Users
+            User superAdmin = new User();
+            superAdmin.setFullName("Vrushabh Gorivale");
+            superAdmin.setEmail("vrushabh@geovoice.com");
+            superAdmin.setPassword(passwordEncoder.encode("vrushabh@1234"));
+            superAdmin.setPhone("9876543210");
+            superAdmin.setRole(Role.SUPER_ADMIN);
+            superAdmin.setRewardPoints(150);
+            userRepository.save(superAdmin);
+
+            User municipalAdmin = new User();
+            municipalAdmin.setFullName("Nirupam Shinde");
+            municipalAdmin.setEmail("nirupam@geovoice.com");
+            municipalAdmin.setPassword(passwordEncoder.encode("nirupam@1234"));
+            municipalAdmin.setPhone("9876543211");
+            municipalAdmin.setRole(Role.MUNICIPAL_ADMIN);
+            municipalAdmin.setRewardPoints(100);
+            userRepository.save(municipalAdmin);
+
             User citizen1 = new User();
-            citizen1.setFullName("Vrushabh Patel");
-            citizen1.setEmail("citizen1@example.com");
-            citizen1.setPassword(passwordEncoder.encode("password123"));
-            citizen1.setPhone("9876543210");
+            citizen1.setFullName("Ajinkya Dhole");
+            citizen1.setEmail("ajinkya@gmail.com");
+            citizen1.setPassword(passwordEncoder.encode("ajinkya@1234"));
+            citizen1.setPhone("9876543212");
             citizen1.setRole(Role.CITIZEN);
-            citizen1.setRewardPoints(150); // Give them some starting points to test redemption
+            citizen1.setRewardPoints(50);
             userRepository.save(citizen1);
 
             User citizen2 = new User();
-            citizen2.setFullName("Aarav Sharma");
-            citizen2.setEmail("citizen2@example.com");
-            citizen2.setPassword(passwordEncoder.encode("password123"));
-            citizen2.setPhone("9876543211");
+            citizen2.setFullName("Tanay Gorivale");
+            citizen2.setEmail("tanay@gmail.com");
+            citizen2.setPassword(passwordEncoder.encode("tanay@1234"));
+            citizen2.setPhone("9876543213");
             citizen2.setRole(Role.CITIZEN);
             citizen2.setRewardPoints(0);
             userRepository.save(citizen2);
-
-            User admin = new User();
-            admin.setFullName("PMC Officer");
-            admin.setEmail("admin@example.com");
-            admin.setPassword(passwordEncoder.encode("password123"));
-            admin.setPhone("9876543212");
-            admin.setRole(Role.MUNICIPAL_ADMIN);
-            userRepository.save(admin);
-
-            User superAdmin = new User();
-            superAdmin.setFullName("System Super Admin");
-            superAdmin.setEmail("superadmin@example.com");
-            superAdmin.setPassword(passwordEncoder.encode("password123"));
-            superAdmin.setPhone("9876543213");
-            superAdmin.setRole(Role.SUPER_ADMIN);
-            userRepository.save(superAdmin);
 
             return ResponseEntity.ok(Map.of("message", "Master data and Pune city demo accounts seeded successfully!"));
         } catch (Exception e) {

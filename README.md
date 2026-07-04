@@ -310,6 +310,13 @@ If you found this project helpful, consider giving it a ⭐ on GitHub.
 
 It helps the project reach more developers and motivates future improvements.
 
+# DEMO Credentials
+users in database {email,name,password,role}
+1. vrushabh@geovoice.com , Vrushabh Gorivale , vrushabh@1234 , SUPER_ADMIN
+2. nirupam@geovoice.com  , Nirupam Shinde , nirupam@1234 , MUNICIPAL_ADMIN
+3. ajinkya@gmail.com , Ajinkya Dhole , ajinkya@1234 , CITIZEN 
+4. tanay@gmail.com , Tanay Gorivale , tanay@1234 , CITIZEN
+
 ---
 
 ## 👨‍💻 Author

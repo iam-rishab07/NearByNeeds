@@ -31,6 +31,7 @@ public class Issue {
     @Column(name = "photo_urls", columnDefinition = "TEXT")
     private String photoUrls;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @Column(nullable = true, columnDefinition = "POINT SRID 4326")
     private org.locationtech.jts.geom.Point location;
 
@@ -154,6 +155,7 @@ public class Issue {
         this.photoUrls = photoUrls;
     }
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     public org.locationtech.jts.geom.Point getLocation() {
         return location;
     }
